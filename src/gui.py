@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import customtkinter
 
 class RPSGameApp:
     def __init__(self, root):
@@ -56,6 +57,23 @@ class RPSGameApp:
 
         self.comp_move_label = tk.Label(self.comp_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
         self.comp_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
+
+        # --- Shoot Button ---
+        self.shoot_button = customtkinter.CTkButton(
+            master=root,
+            text="SHOOT",
+            fg_color="black",
+            hover_color="#333333",
+            text_color="white",
+            corner_radius=20,
+            font=("Open Sauce Sans", 14),
+            width=150,
+            height=35
+        )
+        self.shoot_button.pack(pady=(0, 20))
+
+        self.result_label = tk.Label(root, text="Result", font=("Open Sauce Sans", 14), bg="white")
+        self.result_label.pack()
 
     def rounded_rect(self, canvas, x1, y1, x2, y2, radius=10, **kwargs):
         points = [
