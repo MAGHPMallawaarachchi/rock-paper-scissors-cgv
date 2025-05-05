@@ -8,6 +8,7 @@ class RPSGameApp:
         self.root.title("Rock Paper Scissors Game")
         self.root.geometry("700x530")
         self.root.configure(bg="white")
+        self.root.resizable(False, False)
 
         # --- Top bar ---
         self.top_frame = tk.Frame(root, bg="white")
