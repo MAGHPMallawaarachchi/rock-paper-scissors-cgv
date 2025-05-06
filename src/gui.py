@@ -90,6 +90,8 @@ class RPSGameApp:
         self.result_label = tk.Label(root, text="Result", font=("Open Sauce Sans", 14), bg="white")
         self.result_label.pack()
 
+        self.update_camera()
+
     def rounded_rect(self, canvas, x1, y1, x2, y2, radius=10, **kwargs):
         points = [
             x1 + radius, y1,
