@@ -1,6 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import customtkinter
+import cv2
+from tkinter import messagebox
 
 class RPSGameApp:
     def __init__(self, root):
@@ -9,6 +11,12 @@ class RPSGameApp:
         self.root.geometry("700x530")
         self.root.configure(bg="white")
         self.root.resizable(False, False)
+
+        #initialize the web cam
+        self.video_stream = cv2.VideoCapture(0)
+        if not self.video_stream.isOpened():
+            messagebox.showerror("Error", "Cannot open the webcam!")
+            exit()
 
         # --- Top bar ---
         self.top_frame = tk.Frame(root, bg="white")
