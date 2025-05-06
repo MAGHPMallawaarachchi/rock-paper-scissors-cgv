@@ -112,6 +112,20 @@ class RPSGameApp:
             x1, y1
         ]
         return canvas.create_polygon(points, smooth=True, **kwargs)
+    
+    def update_camera(self):
+        ret, frame = self.video_stream.read()
+        if ret:
+            self.latest_frame = frame.copy()  # Save for gesture detection
+            frame = cv2.flip(frame, 1)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            img = Image.fromarray(frame)
+            img = img.resize((300, (300 * 3) // 4), Image.LANCZOS)
+            img = self.round_corners(img, radius=10)
+            imgtk = ImageTk.PhotoImage(image=img)
+            self.image_label.imgtk = imgtk
+            self.image_label.configure(image=imgtk)
+        self.root.after(10, self.update_camera)
 
 def launch_gui():
     root = tk.Tk()
