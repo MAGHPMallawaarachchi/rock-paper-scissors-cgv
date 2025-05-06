@@ -57,12 +57,18 @@ class RPSGameApp:
         self.camera_frame = tk.Frame(self.canvas, bg="white", width=270, height=270)
         self.canvas.create_window(20, 20, anchor="nw", window=self.camera_frame)
 
+        self.image_label = tk.Label(self.camera_frame, bg="white")
+        self.image_label.place(relx=0.5, rely=0.0, anchor="n")
+
         self.user_move_label = tk.Label(self.camera_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
         self.user_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
 
         # Right - Computer frame (fixed size)
         self.comp_frame = tk.Frame(self.canvas, bg="white", width=270, height=270)
         self.canvas.create_window(370, 20, anchor="nw", window=self.comp_frame)
+
+        self.comp_image_label = tk.Label(self.comp_frame, bg="white")
+        self.comp_image_label.place(relx=0.5, rely=0.0, anchor="n")  # Top 
 
         self.comp_move_label = tk.Label(self.comp_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
         self.comp_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
