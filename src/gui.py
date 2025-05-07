@@ -1,6 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import customtkinter
+import cv2
+from tkinter import messagebox
 
 class RPSGameApp:
     def __init__(self, root):
@@ -9,6 +11,12 @@ class RPSGameApp:
         self.root.geometry("700x530")
         self.root.configure(bg="white")
         self.root.resizable(False, False)
+
+        #initialize the web cam
+        self.video_stream = cv2.VideoCapture(0)
+        if not self.video_stream.isOpened():
+            messagebox.showerror("Error", "Cannot open the webcam!")
+            exit()
 
         # --- Top bar ---
         self.top_frame = tk.Frame(root, bg="white")
@@ -49,12 +57,18 @@ class RPSGameApp:
         self.camera_frame = tk.Frame(self.canvas, bg="white", width=270, height=270)
         self.canvas.create_window(20, 20, anchor="nw", window=self.camera_frame)
 
+        self.image_label = tk.Label(self.camera_frame, bg="white")
+        self.image_label.place(relx=0.5, rely=0.0, anchor="n")
+
         self.user_move_label = tk.Label(self.camera_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
         self.user_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
 
         # Right - Computer frame (fixed size)
         self.comp_frame = tk.Frame(self.canvas, bg="white", width=270, height=270)
         self.canvas.create_window(370, 20, anchor="nw", window=self.comp_frame)
+
+        self.comp_image_label = tk.Label(self.comp_frame, bg="white")
+        self.comp_image_label.place(relx=0.5, rely=0.0, anchor="n")  # Top 
 
         self.comp_move_label = tk.Label(self.comp_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
         self.comp_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
@@ -75,6 +89,8 @@ class RPSGameApp:
 
         self.result_label = tk.Label(root, text="Result", font=("Open Sauce Sans", 14), bg="white")
         self.result_label.pack()
+
+        self.update_camera()
 
     def rounded_rect(self, canvas, x1, y1, x2, y2, radius=10, **kwargs):
         points = [
@@ -98,6 +114,20 @@ class RPSGameApp:
             x1, y1
         ]
         return canvas.create_polygon(points, smooth=True, **kwargs)
+    
+    def update_camera(self):
+        ret, frame = self.video_stream.read()
+        if ret:
+            self.latest_frame = frame.copy()  # Save for gesture detection
+            frame = cv2.flip(frame, 1)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            img = Image.fromarray(frame)
+            img = img.resize((300, (300 * 3) // 4), Image.LANCZOS)
+            img = self.round_corners(img, radius=10)
+            imgtk = ImageTk.PhotoImage(image=img)
+            self.image_label.imgtk = imgtk
+            self.image_label.configure(image=imgtk)
+        self.root.after(10, self.update_camera)
 
 def launch_gui():
     root = tk.Tk()
