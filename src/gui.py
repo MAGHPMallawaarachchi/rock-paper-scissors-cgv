@@ -149,6 +149,22 @@ class RPSGameApp:
                 user_move = classify_gesture(no_bg_path)
                 comp_move = computer_choice()
                 result = decide_winner(user_move, comp_move)
+
+                # Set computer image
+                if comp_move == "rock":
+                    self.comp_image_label.configure(image=self.rock_photo)
+                    self.comp_image_label.image = self.rock_photo
+                elif comp_move == "paper":
+                    self.comp_image_label.configure(image=self.paper_photo)
+                    self.comp_image_label.image = self.paper_photo
+                else:
+                    self.comp_image_label.configure(image=self.scissor_photo)
+                    self.comp_image_label.image = self.scissor_photo
+                
+                # Update text labels
+                self.user_move_label.config(text=user_move.upper())
+                self.comp_move_label.config(text=comp_move.upper())
+                self.result_label.config(text=f"{result}")
                 
             else:
                 raise Exception("Failed to capture image from webcam")
