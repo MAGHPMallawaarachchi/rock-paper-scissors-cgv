@@ -30,14 +30,20 @@ def remove_background(image_path, save_path="../images/no_bg.jpg"):
 def greyscale(image_path):
     img = cv2.imread(image_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("Greyscale", gray)
+    cv2.waitKey(500)
     return gray
 
 def threshold(gray_img):
     _, thresh = cv2.threshold(gray_img, 127, 255, cv2.THRESH_BINARY)
+    cv2.imshow("Threshold", thresh)
+    cv2.waitKey(500)
     return thresh
 
 def binarize(gray_img):
     binarized = cv2.adaptiveThreshold(gray_img, 255,
                                       cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                       cv2.THRESH_BINARY, 11, 2)
+    cv2.imshow("Binarized", binarized)
+    cv2.waitKey(500)
     return binarized
