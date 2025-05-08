@@ -1,5 +1,5 @@
 import tkinter as tk
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw
 import customtkinter
 import cv2
 from tkinter import messagebox
@@ -114,6 +114,13 @@ class RPSGameApp:
             x1, y1
         ]
         return canvas.create_polygon(points, smooth=True, **kwargs)
+    
+    def round_corners(self, img, radius):
+        mask = Image.new('L', img.size, 0)
+        draw = ImageDraw.Draw(mask)
+        draw.rounded_rectangle([0, 0, img.size[0], img.size[1]], radius=radius, fill=255)
+        img.putalpha(mask)
+        return img
     
     def update_camera(self):
         ret, frame = self.video_stream.read()
