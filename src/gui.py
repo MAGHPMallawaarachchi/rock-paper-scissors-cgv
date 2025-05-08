@@ -129,6 +129,48 @@ class RPSGameApp:
             self.image_label.configure(image=imgtk)
         self.root.after(10, self.update_camera)
 
+    def capture_image(self):
+        from processing import remove_background, greyscale, threshold, binarize
+        from classifier import classify_gesture
+        from game_logic import computer_choice, decide_winner
+
+        try:
+            ret, frame = self.video_stream.read()
+            if ret:
+                frame = cv2.flip(frame, 1)
+                save_path = "../images/input.jpg"
+                cv2.imwrite(save_path, frame)
+
+                no_bg_path = remove_background(save_path)
+                gray_img = greyscale(no_bg_path)
+                thresh_img = threshold(gray_img)
+                bin_img = binarize(gray_img)
+                
+                user_move = classify_gesture(no_bg_path)
+                comp_move = computer_choice()
+                result = decide_winner(user_move, comp_move)
+
+                # Set computer image
+                if comp_move == "rock":
+                    self.comp_image_label.configure(image=self.rock_photo)
+                    self.comp_image_label.image = self.rock_photo
+                elif comp_move == "paper":
+                    self.comp_image_label.configure(image=self.paper_photo)
+                    self.comp_image_label.image = self.paper_photo
+                else:
+                    self.comp_image_label.configure(image=self.scissor_photo)
+                    self.comp_image_label.image = self.scissor_photo
+                
+                # Update text labels
+                self.user_move_label.config(text=user_move.upper())
+                self.comp_move_label.config(text=comp_move.upper())
+                self.result_label.config(text=f"{result}")
+                
+            else:
+                raise Exception("Failed to capture image from webcam")
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
+
 def launch_gui():
     root = tk.Tk()
     app = RPSGameApp(root)
