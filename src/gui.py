@@ -129,6 +129,18 @@ class RPSGameApp:
             self.image_label.configure(image=imgtk)
         self.root.after(10, self.update_camera)
 
+    def capture_image(self):
+        try:
+            ret, frame = self.video_stream.read()
+            if ret:
+                frame = cv2.flip(frame, 1)
+                save_path = "../images/input.jpg"
+                cv2.imwrite(save_path, frame)
+            else:
+                raise Exception("Failed to capture image from webcam")
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
+
 def launch_gui():
     root = tk.Tk()
     app = RPSGameApp(root)
