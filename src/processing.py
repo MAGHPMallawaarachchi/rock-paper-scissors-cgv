@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import os
+import time
 
 def remove_background(image_path, save_path="../images/no_bg.jpg"):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)  # Ensure folder exists
@@ -31,13 +32,13 @@ def greyscale(image_path):
     img = cv2.imread(image_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cv2.imshow("Greyscale", gray)
-    cv2.waitKey(500)
+    _auto_close_windows(1)
     return gray
 
 def threshold(gray_img):
     _, thresh = cv2.threshold(gray_img, 127, 255, cv2.THRESH_BINARY)
     cv2.imshow("Threshold", thresh)
-    cv2.waitKey(500)
+    _auto_close_windows(1)
     return thresh
 
 def binarize(gray_img):
@@ -45,5 +46,16 @@ def binarize(gray_img):
                                       cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                       cv2.THRESH_BINARY, 11, 2)
     cv2.imshow("Binarized", binarized)
-    cv2.waitKey(500)
+    _auto_close_windows(1)
     return binarized
+
+def _auto_close_windows(seconds):
+    """Wait for `seconds` then close all OpenCV windows."""
+    start_time = time.time()
+    while True:
+        if time.time() - start_time > seconds:
+            cv2.destroyAllWindows()
+            break
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
+            break
