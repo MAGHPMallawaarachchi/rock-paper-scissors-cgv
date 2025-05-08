@@ -171,6 +171,10 @@ class RPSGameApp:
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
+    def quit_game(self):
+        self.video_stream.release()
+        self.root.quit()
+
 def launch_gui():
     root = tk.Tk()
     app = RPSGameApp(root)
