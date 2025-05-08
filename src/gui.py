@@ -130,12 +130,18 @@ class RPSGameApp:
         self.root.after(10, self.update_camera)
 
     def capture_image(self):
+        from processing import remove_background, greyscale
+
         try:
             ret, frame = self.video_stream.read()
             if ret:
                 frame = cv2.flip(frame, 1)
                 save_path = "../images/input.jpg"
                 cv2.imwrite(save_path, frame)
+
+                no_bg_path = remove_background(save_path)
+                gray_img = greyscale(no_bg_path)
+                
             else:
                 raise Exception("Failed to capture image from webcam")
         except Exception as e:
