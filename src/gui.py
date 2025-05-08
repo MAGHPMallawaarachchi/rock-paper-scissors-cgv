@@ -132,7 +132,7 @@ class RPSGameApp:
     def capture_image(self):
         from processing import remove_background, greyscale, threshold, binarize
         from classifier import classify_gesture
-        from game_logic import computer_choice
+        from game_logic import computer_choice, decide_winner
 
         try:
             ret, frame = self.video_stream.read()
@@ -148,6 +148,7 @@ class RPSGameApp:
                 
                 user_move = classify_gesture(no_bg_path)
                 comp_move = computer_choice()
+                result = decide_winner(user_move, comp_move)
                 
             else:
                 raise Exception("Failed to capture image from webcam")
