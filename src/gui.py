@@ -60,7 +60,7 @@ class RPSGameApp:
         self.image_label = tk.Label(self.camera_frame, bg="white")
         self.image_label.place(relx=0.5, rely=0.0, anchor="n")
 
-        self.user_move_label = tk.Label(self.camera_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
+        self.user_move_label = tk.Label(self.camera_frame, text="", bg="white", font=("Open Sauce Sans", 12))
         self.user_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
 
         # Right - Computer frame (fixed size)
@@ -70,13 +70,19 @@ class RPSGameApp:
         self.comp_image_label = tk.Label(self.comp_frame, bg="white")
         self.comp_image_label.place(relx=0.5, rely=0.0, anchor="n")  # Top 
 
-        self.comp_move_label = tk.Label(self.comp_frame, text="test", bg="white", font=("Open Sauce Sans", 12))
+        self.comp_move_label = tk.Label(self.comp_frame, text="", bg="white", font=("Open Sauce Sans", 12))
         self.comp_move_label.place(relx=0.5, rely=1.0, anchor="s")  # Bottom center
+
+        # Load Computer Choice Images
+        self.rock_photo = ImageTk.PhotoImage(Image.open("assets/rock.png").resize((200, 200), Image.LANCZOS))
+        self.paper_photo = ImageTk.PhotoImage(Image.open("assets/paper.png").resize((200, 200), Image.LANCZOS))
+        self.scissor_photo = ImageTk.PhotoImage(Image.open("assets/scissor.png").resize((200, 200), Image.LANCZOS))
 
         # --- Shoot Button ---
         self.shoot_button = customtkinter.CTkButton(
             master=root,
             text="SHOOT",
+            command=self.capture_image,
             fg_color="black",
             hover_color="#333333",
             text_color="white",
@@ -87,7 +93,7 @@ class RPSGameApp:
         )
         self.shoot_button.pack(pady=(0, 20))
 
-        self.result_label = tk.Label(root, text="Result", font=("Open Sauce Sans", 14), bg="white")
+        self.result_label = tk.Label(root, text="", font=("Open Sauce Sans", 14), bg="white")
         self.result_label.pack()
 
         self.update_camera()
