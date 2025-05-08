@@ -35,3 +35,9 @@ def greyscale(image_path):
 def threshold(gray_img):
     _, thresh = cv2.threshold(gray_img, 127, 255, cv2.THRESH_BINARY)
     return thresh
+
+def binarize(gray_img):
+    binarized = cv2.adaptiveThreshold(gray_img, 255,
+                                      cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                      cv2.THRESH_BINARY, 11, 2)
+    return binarized
