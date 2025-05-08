@@ -26,3 +26,8 @@ def remove_background(image_path, save_path="../images/no_bg.jpg"):
         raise ValueError(f"Failed to save background removed image to {save_path}")
     
     return save_path
+
+def greyscale(image_path):
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    return gray
