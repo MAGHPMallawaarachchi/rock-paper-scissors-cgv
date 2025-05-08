@@ -130,7 +130,7 @@ class RPSGameApp:
         self.root.after(10, self.update_camera)
 
     def capture_image(self):
-        from processing import remove_background, greyscale
+        from processing import remove_background, greyscale, threshold, binarize
 
         try:
             ret, frame = self.video_stream.read()
@@ -141,6 +141,8 @@ class RPSGameApp:
 
                 no_bg_path = remove_background(save_path)
                 gray_img = greyscale(no_bg_path)
+                thresh_img = threshold(gray_img)
+                bin_img = binarize(gray_img)
                 
             else:
                 raise Exception("Failed to capture image from webcam")
