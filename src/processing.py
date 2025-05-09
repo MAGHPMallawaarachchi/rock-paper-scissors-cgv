@@ -4,7 +4,7 @@ import numpy as np
 import os
 import time
 
-def remove_background(image_path, save_path="../images/no_bg.jpg"):
+def remove_background(image_path, save_path="images/no_bg.jpg"):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)  # Ensure folder exists
 
     mp_selfie = mp.solutions.selfie_segmentation

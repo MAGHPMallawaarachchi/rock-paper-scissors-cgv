@@ -151,7 +151,7 @@ class RPSGameApp:
             ret, frame = self.video_stream.read()
             if ret:
                 frame = cv2.flip(frame, 1)
-                save_path = "../images/input.jpg"
+                save_path = "images/input.jpg"
                 cv2.imwrite(save_path, frame)
 
                 no_bg_path = remove_background(save_path)
